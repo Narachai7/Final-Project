@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script type="text/javascript" src="simpleGame.js"></script>
+    <script type="text/javascript" src="lib.js"></script>
+    <script type="text/javascript">
+        var Player1_HP = 100;
+        var Player2_HP = 100;
+        var player1;
+        var player2;
+
+
+
+        function init() {
+            scene = new Scene();
+            scene.setSize(1000, 500);
+            bg = new Sprite(scene, "bg.png", 1000, 500);
+            bg.setPosition(500, 250);
+            bg.setSpeed(0);
+            player1 = new GamePlayer1();
+            player2 = new GamePlayer2();
+            scene.start();
+            document.getElementById("Again").style.display = "none"; // ซ่อน button
+        }
+
+        function restart() {
+            document.location.href = "";
+        }
+
+        function update() {
+            scene.clear();
+            if (player1.collidesWith(player2)) {
+                if (keysDown[K_V] && !keysDown[K_DOWN] && !keysDown[K_S]) {
+                    Player2_HP--;
+                }
+                if (keysDown[K_M] && !keysDown[K_S] && !keysDown[K_DOWN]) {
+                    Player1_HP--;
+                }
+
+            }
+            document.getElementById("Player2").innerHTML = "HP: " + Player2_HP;
+            document.getElementById("Player1").innerHTML = "HP: " + Player1_HP;
+            bg.update();
+
+            player1.update();
+            player2.update();
+            player1.motionPlay();
+            player1.checkGravity();
+            player2.motionPlay();
+            player2.checkGravity();
+
+            if (Player1_HP == 0 || Player2_HP == 0) {
+                scene.stop();
+                if(Player1_HP == 0){
+                    document.getElementById("PlayerWin").innerHTML = "Player 2 Win !";
+                }else{
+                    document.getElementById("PlayerWin").innerHTML = "Player 1 Win !";
+                }
+                document.getElementById("Again").style.display = "inline-block"; 
+            }
+
+        }
+    </script>
+</head>
+
+<body onload="init()">
+
+    <div id="PlayerN1">Player1</div>
+    <div id="Player1">HP: 100</div>
+    <div id="PlayerN2">Player2</div>
+    <div id="Player2">HP: 100</div>
+    <div id="PlayerWin" style="font-size: 50px;"></div>
+    <button class="button-50" id="Again" onclick="restart()">เริ่มใหม่</button>
+</body>
+
+</html>
+
+<style>
+    .button-50 {
+        appearance: button;
+        background-color: #000;
+        background-image: none;
+        border: 1px solid #000;
+        border-radius: 4px;
+        box-shadow: #fff 4px 4px 0 0, #000 4px 4px 0 1px;
+        box-sizing: border-box;
+        color: #fff;
+        cursor: pointer;
+        display: inline-block;
+        font-family: ITCAvantGardeStd-Bk, Arial, sans-serif;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 20px;
+        margin: 0 5px 10px 0;
+        overflow: visible;
+        padding: 12px 40px;
+        text-align: center;
+        text-transform: none;
+        touch-action: manipulation;
+        user-select: none;
+        -webkit-user-select: none;
+        vertical-align: middle;
+        white-space: nowrap;
+    }
+
+    .button-50:focus {
+        text-decoration: none;
+    }
+
+    .button-50:hover {
+        text-decoration: none;
+    }
+
+    .button-50:active {
+        box-shadow: rgba(0, 0, 0, .125) 0 3px 5px inset;
+        outline: 0;
+    }
+
+    .button-50:not([disabled]):active {
+        box-shadow: #fff 2px 2px 0 0, #000 2px 2px 0 1px;
+        transform: translate(2px, 2px);
+    }
+
+    @media (min-width: 768px) {
+        .button-50 {
+            padding: 12px 50px;
+        }
+    }
+
+    #Again {
+        position: absolute;
+        left: 440px;
+        top: 280px;
+        z-index: 100;
+
+    }
+
+    #PlayerWin {
+        position: absolute;
+        left: 380px;
+        top: 200px;
+        z-index: 100;
+
+    }
+
+    #Player1 {
+        position: absolute;
+        left: 70px;
+        top: 50px;
+        z-index: 100;
+    }
+
+    #PlayerN1 {
+        position: absolute;
+        left: 70px;
+        top: 30px;
+        z-index: 100;
+    }
+
+    #PlayerN2 {
+        position: absolute;
+        left: 900px;
+        top: 30px;
+        z-index: 100;
+    }
+
+    #Player2 {
+        position: absolute;
+        left: 900px;
+        top: 50px;
+        z-index: 100;
+    }
+</style>
